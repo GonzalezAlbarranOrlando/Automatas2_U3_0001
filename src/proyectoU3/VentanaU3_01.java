@@ -203,12 +203,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             }                                    
         }
         
-        optimizacionGeneral(aux);
-        
-        
-        
-        
-        
+        optimizacionGeneral(aux);                                  
     }
     
     public static void optimizacionGeneral(String s){
