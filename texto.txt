@@ -1,0 +1,9 @@
+A=5+0*1+0;
+Z=5*1+0;
+WHILE(A>B){
+WRITE (A);
+WRITE (B);
+A=A*B*A;
+}
+A=B+A;
+WRITE(B);
