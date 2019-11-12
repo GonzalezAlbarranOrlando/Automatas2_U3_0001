@@ -209,7 +209,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
     public static void optimizacionGeneral(String s){
         String [][] m =  tabla_to_array(s);
         System.out.println(" *************** bloque "+Integer.toString(++contB)+"***************");
-        imprimirMatriz(m);                                
+        imprimirMatriz(m);
+        
     }
     
     private static String[][] asignarBloques(String[][] m, int pos, String num) {             
