@@ -31,8 +31,6 @@ public class VentanaU3_01 extends javax.swing.JFrame {
 
     static String[] lineas;
 
-    
-
     public VentanaU3_01() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -174,147 +172,197 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         System.out.println("Tabla de Cuadruples: \n" + tablaC + "\n");
 
         txtResultado1.setText(codigoI);
-        txtResultado2.setText(tablaC);                
+        txtResultado2.setText(tablaC);
         bloques(tablaC);//separar por bloques
 
     }//GEN-LAST:event_procesarBtnActionPerformed
 
-    
-    static void bloques(String s){//separar por bloques         
-        String [][] m =  tabla_to_array(s);        
+    static void bloques(String s) {//separar por bloques         
+        String[][] m = tabla_to_mat(s);
+
+        m = optimizacionEtiquetas(m);
         //el primer cuadruple es bloque
-        m[0][4]= newBlock();
+        m[0][4] = newBlock();
         for (int i = 0; i < m.length; i++) {//ciclo para asignar bloques
-            if(validacionNum(m[i][3])){ //valida si es un numero en la 4ta posicion (que quiere decir que es un salto condicional)
-                m = asignarBloques(m,i,m[i][3]); 
+            if (validacionNum(m[i][3])) { //valida si es un numero en la 4ta posicion (que quiere decir que es un salto condicional)
+                m = asignarBloques(m, i, m[i][3]);
             }
         }
         System.out.println(" *************** Asignar bloques ***************");
         imprimirMatriz(m);
-        contB=0;
-        m[0][4]="";
-        String aux="";
+        contB = 0;
+        m[0][4] = "";
+        String aux = "";
         for (int i = 0; i < m.length; i++) {//ciclo para optimizar bloques                        
             if (m[i][4].contains("B")) { //si es un fin de bloque
-                optimizacionGeneral(aux); 
-                aux=m[i][0]+"\t"+m[i][1]+"\t"+m[i][2]+"\t"+m[i][3]+"\n";  
-            }else{
-                aux+=m[i][0]+"\t"+m[i][1]+"\t"+m[i][2]+"\t"+m[i][3]+"\n";               
-            }                                    
+                optimizacionGeneral(aux);
+                aux = m[i][0] + "\t" + m[i][1] + "\t" + m[i][2] + "\t" + m[i][3] + "\n";
+            } else {
+                aux += m[i][0] + "\t" + m[i][1] + "\t" + m[i][2] + "\t" + m[i][3] + "\n";
+            }
         }
-        
-        optimizacionGeneral(aux);                                  
+        optimizacionGeneral(aux);
     }
-    
-    public static void optimizacionGeneral(String s){
-        String [][] m =  tabla_to_array(s);
-        System.out.println(" *************** bloque "+Integer.toString(++contB)+"***************");
+
+    static String[][] optimizacionEtiquetas(String[][] m) {
+        int cont;
+        String s;
+
+        for (int i = 0; i < m.length; i++) {
+            s = "";
+            if (m[i][3].contains(":")) { //recorre el arreglo hasta encontrar un (10:)
+                s = m[i][3];
+                cont = i;
+                while (++cont < m.length) { //validacion de que no recorra más del largo del arreglo
+                    if (m[cont][3].contains(":")) {
+                        s += m[cont][3]; //guarda los valores 10: 20: 30: mientras sean consecutivos  
+                        m[cont][3] = "";
+                    } else {// cuando dejan de ser consecutivos                                                                                                                                                                   
+                        break;
+                    }
+                }
+            }
+
+            if (!s.equals("")) {
+                StringTokenizer t = new StringTokenizer(s, ":"); //ejemplo de entradas (10:)(10:20:30:)                        
+                if (t.countTokens() != 1) { //caso en el que solo sea un valor 10: se sale del while
+                    String[] array = new String[t.countTokens()];
+                    for (int j = 0; j < array.length; j++) {
+                        array[j] = t.nextToken();
+                    }
+                    //recorrer la matriz para sustituir ahora que tenemos los valores iguales en un arreglo(10:20:30:)
+                    for (int j = 0; j < m.length; j++) {
+                        if (validacionNum(m[j][3])) { // si es 30 de goto 30
+                            for (int k = 0; k < array.length; k++) { //recorrer el arreglo para cerificar si el valor es igual a los valores identicos guardados anteriormente
+                                if (array[k].equals(m[j][3])) {
+                                    m[j][3] = array[0];//sustituir por el primer valor
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        s = "";
+        for (int i = 0; i < m.length; i++) {
+            if (!"".equals(m[i][3])) {
+                s += m[i][0] + "\t" + m[i][1] + "\t" + m[i][2] + "\t" + m[i][3] + "\n";
+            }
+        }
+        m = tabla_to_mat(s);
+        return m;
+    }
+
+    public static void optimizacionGeneral(String s) {
+        String[][] m = tabla_to_mat(s);
+        System.out.println(" *************** bloque " + Integer.toString(++contB) + "***************");
         imprimirMatriz(m);
-        
+
     }
-    
-    private static String[][] asignarBloques(String[][] m, int pos, String num) {             
+
+    private static String[][] asignarBloques(String[][] m, int pos, String num) {
         String aux;
         for (int i = 0; i < m.length; i++) {
-            if (m[i][3].contains(":")) {                
-                aux="";
-                for (int j = 0; j < m[i][3].length()-1; j++) {
-                    aux+=m[i][3].charAt(j); 
-                }                
-                if (aux.equals(num)) { 
-                    m[i][4]+= newBlock(); //cualquier instruccion que sea destino de un salto condicional es lider
-                }                
-            }            
+            if (m[i][3].contains(":")) {
+                aux = "";
+                for (int j = 0; j < m[i][3].length() - 1; j++) {
+                    aux += m[i][3].charAt(j);
+                }
+                if (aux.equals(num)) {
+                    m[i][4] += newBlock(); //cualquier instruccion que sea destino de un salto condicional es lider
+                }
+            }
         }
-        m[pos+1][4]+= newBlock();//cualquier instruccion que siga despues de un salto condicional es lider        
-        return m;        
+        m[pos + 1][4] += newBlock();//cualquier instruccion que siga despues de un salto condicional es lider        
+        return m;
     }
-    
-    
-    static boolean validacionNum(String s){
+
+    static boolean validacionNum(String s) {
         for (int i = 0; i < s.length(); i++) {
-            if(!"1234567890".contains(Character.toString(s.charAt(i)))){ 
+            if (!"1234567890".contains(Character.toString(s.charAt(i)))) {
                 return false;
-            }            
+            }
         }
-        return true;        
+        return true;
     }
-    
-    static int contB=0;
-    static String newBlock(){
-        return "-----B"+Integer.toString(++contB);
+
+    static int contB = 0;
+
+    static String newBlock() {
+        return "-----B" + Integer.toString(++contB);
     }
-    
-    static String[][] tabla_to_array(String s){                
+
+    static String[][] tabla_to_mat(String s) {
         StringTokenizer t = new StringTokenizer(s, "\n");
-        String [][] matriz = new String [t.countTokens()][5];
-        
+        String[][] matriz = new String[t.countTokens()][5];
+
         for (int i = 0; i < matriz.length; i++) {
-            
+
             StringTokenizer t_aux = new StringTokenizer(t.nextToken(), "\t");
             switch (t_aux.countTokens()) {
                 case 4:
                     //t1=a+b;
-                    matriz[i][0]= t_aux.nextToken();
-                    matriz[i][1]= t_aux.nextToken();
-                    matriz[i][2]= t_aux.nextToken();
-                    matriz[i][3]= t_aux.nextToken();
+                    matriz[i][0] = t_aux.nextToken();
+                    matriz[i][1] = t_aux.nextToken();
+                    matriz[i][2] = t_aux.nextToken();
+                    matriz[i][3] = t_aux.nextToken();
                     break;
                 case 3:
                     // z = t1;
-                    matriz[i][0]= t_aux.nextToken();
-                    matriz[i][1]= "";
-                    matriz[i][2]= t_aux.nextToken();
-                    matriz[i][3]= t_aux.nextToken();
+                    matriz[i][0] = t_aux.nextToken();
+                    matriz[i][1] = "";
+                    matriz[i][2] = t_aux.nextToken();
+                    matriz[i][3] = t_aux.nextToken();
                     break;
                 case 2:
                     // write t1; read a;
-                    matriz[i][0]= t_aux.nextToken();
-                    matriz[i][1]= "";
-                    matriz[i][2]= "";                
-                    matriz[i][3]= t_aux.nextToken();
+                    matriz[i][0] = t_aux.nextToken();
+                    matriz[i][1] = "";
+                    matriz[i][2] = "";
+                    matriz[i][3] = t_aux.nextToken();
                     break;
                 case 1:
                     // write t1; read a;
-                    matriz[i][0]= "";
-                    matriz[i][1]= "";
-                    matriz[i][2]= "";
-                    matriz[i][3]= t_aux.nextToken();
+                    matriz[i][0] = "";
+                    matriz[i][1] = "";
+                    matriz[i][2] = "";
+                    matriz[i][3] = t_aux.nextToken();
                     break;
                 default:
                     break;
             }
-            matriz[i][4]= "";
+            matriz[i][4] = "";
         }
-        
+
         return matriz;
-        
+
     }
-    
-    static void imprimirMatriz(String[][] m){
-        for(int i = 0; i < m.length; i++){
-	for(int j = 0; j < m[i].length; j++){
-		System.out.print(m[i][j] + "\t");	// Imprime elemento
-	}
-	System.out.println();	// Imprime salto de línea
-}
+
+    static void imprimirMatriz(String[][] m) {
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[i].length; j++) {
+                System.out.print(m[i][j] + "\t");	// Imprime elemento
+            }
+            System.out.println();	// Imprime salto de línea
+        }
     }
+
     static String juntarLineas(String str) {
         str = agregarEspacios(str, separadoresAux);
-        
+
         StringTokenizer t = new StringTokenizer(str, "\n");
-      str="";
+        str = "";
         while (t.hasMoreTokens()) {
-            str+=t.nextToken()+" ";           
+            str += t.nextToken() + " ";
         }
-        
-        
+
         StringTokenizer t1 = new StringTokenizer(str, "\t");
-      str="";
+        str = "";
         while (t1.hasMoreTokens()) {
-            str+=t1.nextToken()+" ";          
+            str += t1.nextToken() + " ";
         }
-        
 
         return str;
     }
@@ -325,7 +373,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         if (array.length <= 1) {
             return;
         }
-        if (!array[0].equals("IF") && !array[0].equals("WHILE")) {                                               
+        if (!array[0].equals("IF") && !array[0].equals("WHILE")) {
             if (array[0].equals("READ")) { //--------------------------- READ
                 System.out.println("READ " + array[2] + "\n");
                 codigoI += "READ " + array[2] + "\n";
@@ -338,7 +386,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                     }
                     aux += array[i] + " ";
                 }
-                
+
                 aux = quitarOpArit(postfijoOrlas(aux));
                 System.out.println("WRITE " + aux + "\n");
                 codigoI += "WRITE " + aux + "\n";
@@ -482,7 +530,6 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                     System.out.println("\tgoto " + ei);
                     codigoI += "\tgoto " + ei + "\n";
                     tablaC += " \t\t\t" + ei + "\n";
-                    
 
                 } else {   //--------------------------- IF    IF ELSE
                     //gen('goto' es)
@@ -605,9 +652,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                     lineas[i] += Integer.toString(b1t) + "," + Integer.toString(b1f) + ";";
 
                     String[] columnas = strToArray(agregarEspacios(lineas[i], separadoresAux));
-                    String aux2 = columnas[2] + " " + columnas[4] + " " + columnas[6];     
-                    
-                    
+                    String aux2 = columnas[2] + " " + columnas[4] + " " + columnas[6];
+
                     procesarOpRel(aux2, Integer.parseInt(columnas[8]), Integer.parseInt(columnas[10]));
                     if (o) {
                         System.out.println(b1f + ": ");
@@ -992,8 +1038,6 @@ public class VentanaU3_01 extends javax.swing.JFrame {
 
     static String postfijoOrlas(String str) {
 
-        
-     
         str = agregarEspacios(str, "(){}<>+-*/=;|&"); //agregar espacios dependiendo de separadores auxiliares
         String[] array = strToArray(str);//se convierte en un array de "palabras"
 
@@ -1055,7 +1099,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         }
 
         pila1 += strPila(pila2); //juntar p1 y p2
-        pila1 = quitarParentesis(pila1);      
+        pila1 = quitarParentesis(pila1);
         return pila1;
     }
 
