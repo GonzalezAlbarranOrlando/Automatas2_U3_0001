@@ -28,6 +28,12 @@ public class VentanaU3_01 extends javax.swing.JFrame {
     static String codigoI = "";
     static String tablaC = "";
     static int numTemp = 0;
+    static int indexArrays = 0;
+
+    static String[] arrTemp = new String[100];
+    static String[] arrOp1 = new String[100];
+    static String[] arrOp2 = new String[100];
+    static String[] arrOp = new String[100];
 
     static String[] lineas;
 
@@ -167,15 +173,109 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         System.out.println("\n\n\nCodigo fuente: \n" + cadenaInicial + "\n");
         cadenaInicial = juntarLineas(cadenaInicial);
         System.out.println("\n\n\nCodigo fuente: \n" + cadenaInicial + "\n");
+        System.out.println(cadenaInicial.length());
         sent(cadenaInicial);
-        System.out.println("Codigo intermedio: \n" + codigoI + "\n");
-        System.out.println("Tabla de Cuadruples: \n" + tablaC + "\n");
+        operacion();
+        imprimir();
+        //nulas();
+        imprimir();
+//        System.out.println("Codigo intermedio: \n" + codigoI + "\n");
+//        System.out.println("Tabla de Cuadruples: \n" + tablaC + "\n");
 
         txtResultado1.setText(codigoI);
         txtResultado2.setText(tablaC);
-        bloques(tablaC);//separar por bloques
+//        bloques(tablaC);//separar por bloques
 
     }//GEN-LAST:event_procesarBtnActionPerformed
+
+    static void imprimir(){
+        for (int i = 0; i < arrTemp.length; i++) {
+            if(arrTemp[i] != null){
+                System.out.println(arrOp1[i] + "\t" + arrOp2[i] + "\t" + arrOp[i] + "\t" + arrTemp[i]);
+            }
+        }
+    }
+
+    /*
+     *  Realiza optimización de código para: 
+     *  hacer las operaciones
+     *  5 * 4 = 20, etc.
+     */
+    static void operacion() {
+        System.out.println("Operaciones-------------------------------------------");
+        String[] temp = arrTemp;
+        String[] op1 = arrOp1;
+        String[] op = arrOp;
+        String[] op2 = arrOp2;
+        for (int i = 0; i < op1.length; i++) {
+            if (op1[i] != null) {
+                if (buscaLetras(op1[i]) != true) {
+                    String number = op1[i];
+                    Integer op1Num = Integer.valueOf(number);
+                    int resultado = 0;
+                    char opSigno = op[i].charAt(0);                    
+                    if (buscaLetras(op2[i]) != true && (opSigno == '+' || opSigno == '-' || opSigno == '*' || opSigno == '/')) {
+                        number = op2[i]; 
+                        Integer op2Num = Integer.valueOf(number);
+                        String nuevoValor;
+                        
+                        switch (opSigno) {
+                            case '+':                                                               
+                                resultado = op1Num + op2Num;
+                                nuevoValor = Integer.toString(resultado);
+                                arrOp1[i] = nuevoValor;
+                                arrOp2[i] = "";
+                                arrOp[i] = "=";
+                                break;
+                            case '-':                                                               
+                                resultado = op1Num - op2Num;
+                                nuevoValor = Integer.toString(resultado);
+                                arrOp1[i] = nuevoValor;
+                                arrOp2[i] = "";
+                                arrOp[i] = "=";
+                                break;
+                            case '*':
+                                resultado = op1Num * op2Num;
+                                nuevoValor = Integer.toString(resultado);
+                                arrOp1[i] = nuevoValor;
+                                arrOp2[i] = "";
+                                arrOp[i] = "=";
+                                break;
+                            case '/':                                                               
+                                resultado = op1Num / op2Num;
+                                nuevoValor = Integer.toString(resultado);
+                                arrOp1[i] = nuevoValor;
+                                arrOp2[i] = "";
+                                arrOp[i] = "=";
+                                break;    
+                        }
+                    }
+                }
+            } else {
+                break;
+            }
+        }
+    }
+    
+    
+    /*
+     *   Busca si hay un letra en alguna cadena 
+     *   "T1"    -> Tiene letra
+     *   "C"     -> Tiene letra           
+     *   "8"     -> No tiene letra
+     */
+    static boolean buscaLetras(String s){
+        boolean res = false;
+        char letra;
+        for (int i = 0; i < s.length(); i++) {
+            letra = s.charAt(i);
+            if (letra >= 63 && letra <= 90) {
+                res = true;
+                break;
+            }
+        }        
+        return res;
+    }
 
     static void bloques(String s) {//separar por bloques         
         String[][] m = tabla_to_mat(s);
@@ -1020,6 +1120,11 @@ public class VentanaU3_01 extends javax.swing.JFrame {
 
             String temp = "T" + (++numTemp);
             strTemporales += temp + " = " + op1 + " " + op + " " + op2 + "\n";
+            arrTemp[indexArrays] = temp;
+            arrOp1[indexArrays] = op1;
+            arrOp[indexArrays] = op;
+            arrOp2[indexArrays] = op2;
+            indexArrays++;
             tablaC += op1 + "\t" + op2 + "\t" + op + "\t" + temp + "\n";
 
             //quitamos los valores que ya pusimos en temporales de operaciones aritmeticas
