@@ -175,51 +175,128 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         System.out.println("\n\n\nCodigo fuente: \n" + cadenaInicial + "\n");
         System.out.println(cadenaInicial.length());
         sent(cadenaInicial);
+        
+        /***********************    NOTA    **********************************
+         * Los siguiente metodos se ponen muchas veces para realizar el proceso 
+         * adecuado, aun queda hacer un for para que lo dinamicamente.
+         * 
+         */
+        
+        
+        
         operacion();
         imprimir();
         nulas();
         imprimir();
+        asignacion();
+        imprimir();
+
+        operacion();
+        imprimir();
+        nulas();
+        imprimir();
+        asignacion();
+        imprimir();
+        
+        operacion();
+        imprimir();
+        nulas();
+        imprimir();
+        asignacion();
+        imprimir();
+        
+        operacion();
+        imprimir();
+        
 //        System.out.println("Codigo intermedio: \n" + codigoI + "\n");
 //        System.out.println("Tabla de Cuadruples: \n" + tablaC + "\n");
-
         txtResultado1.setText(codigoI);
         txtResultado2.setText(tablaC);
 //        bloques(tablaC);//separar por bloques
 
     }//GEN-LAST:event_procesarBtnActionPerformed
 
-    static void imprimir(){
+    static void imprimir() {
         for (int i = 0; i < arrTemp.length; i++) {
-            if(arrTemp[i] != null){
+            if (arrTemp[i] != null) {
                 System.out.println(arrOp1[i] + "\t" + arrOp2[i] + "\t" + arrOp[i] + "\t" + arrTemp[i]);
             }
         }
     }
-    
+
+    /*  Optimizacion de código para:
+     *  Raliza la susticion de asignaciones
+     *  T1 = 5
+     *  T2 = T1 + 4
+     *
+     *  El resultado es: 
+     *  T2 = 5 + 4
+     */
+    static void asignacion() {
+        System.out.println("Asignacion--------------------------------------------");
+        String[] temp = arrTemp;
+        String[] op1 = arrOp1;
+        String[] op = arrOp;
+        String[] op2 = arrOp2;
+        for (int i = 0; i < op1.length; i++) {
+            if (op1[i] != null) {
+                boolean camnios = false;
+                if ("=".equals(op[i])) {
+                    String valor = op1[i];
+                    String tempValor = temp[i];
+                    for (int j = 0; j < arrTemp.length; j++) {
+                        if (j != i) {
+                            if (op1[j] != null && op1[j] != null) {
+                                if (arrOp1[j].equals(tempValor)) {
+                                    arrOp1[j] = valor;
+                                    camnios = true;
+                                }
+                                if (arrOp2[j].equals(tempValor)) {
+                                    arrOp2[j] = valor;
+                                    camnios = true;
+                                }
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    if (camnios) {
+                        arrOp[i] = "";
+                        arrOp1[i] = "";
+                        arrOp2[i] = "";
+                        arrTemp[i] = "";
+                    }
+
+                }
+            }
+        }
+
+    }
+
     /*  Optimizacion de código para:
      *  Raliza la eliminacion de nulas
      *  x+0=x   x-0=x   x*0=0
      *  x*1=x   x/1=x
      */
-    static void nulas(){
+    static void nulas() {
         System.out.println("Nulas-------------------------------------------------");
         String[] temp = arrTemp;
         String[] op1 = arrOp1;
         String[] op = arrOp;
         String[] op2 = arrOp2;
-        
+
         /*
          *  For que busca 0 o 1 en los Operadores1
-        */
+         */
         for (int i = 0; i < op1.length; i++) {
-            if (op1[i] != null){
-                if (buscaLetras(op1[i]) != true){
+            if (op1[i] != null && !"".equals(op1[i])) {
+                if (buscaLetras(op1[i]) != true) {
                     String number = op1[i];
                     Integer op1Num = Integer.valueOf(number);
                     if (op1Num == 0 && !"".equals(op2[i])) {
                         char opSigno = op[i].charAt(0);
                         if (opSigno == '+' || opSigno == '-' || opSigno == '*') {
-                            switch(opSigno){
+                            switch (opSigno) {
                                 case '+':
                                 case '-':
                                     String res = op2[i];
@@ -234,18 +311,18 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                                     break;
                             }
                         }
-                    }else{
+                    } else {
                         if (op1Num == 1 && !"".equals(op2[i])) {
                             char opSigno = op[i].charAt(0);
                             if (opSigno == '*' || opSigno == '/') {
-                                switch(opSigno){
-                                case '*':
-                                case '/':
-                                    String res = op2[i];
-                                    arrOp1[i] = res;
-                                    arrOp2[i] = "";
-                                    arrOp[i] = "=";
-                                    break;
+                                switch (opSigno) {
+                                    case '*':
+                                    case '/':
+                                        String res = op2[i];
+                                        arrOp1[i] = res;
+                                        arrOp2[i] = "";
+                                        arrOp[i] = "=";
+                                        break;
                                 }
                             }
                         }
@@ -253,20 +330,19 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 }
             }
         }
-        
-        
+
         /*
          *  For que busca 0 o 1 en los Operadores2
-        */
+         */
         for (int i = 0; i < op1.length; i++) {
-            if (op2[i] != null && !"".equals(op2[i])){
-                if (buscaLetras(op2[i]) != true){
+            if (op2[i] != null && !"".equals(op2[i])) {
+                if (buscaLetras(op2[i]) != true) {
                     String number = op2[i];
                     Integer op2Num = Integer.valueOf(number);
-                    if (op2Num == 0 &&  !"".equals(op1[i])) {
+                    if (op2Num == 0 && !"".equals(op1[i])) {
                         char opSigno = op[i].charAt(0);
                         if (opSigno == '+' || opSigno == '-' || opSigno == '*') {
-                            switch(opSigno){
+                            switch (opSigno) {
                                 case '+':
                                 case '-':
                                     String res = op1[i];
@@ -274,25 +350,25 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                                     arrOp2[i] = "";
                                     arrOp[i] = "=";
                                     break;
-                                case '*': 
+                                case '*':
                                     arrOp1[i] = "0";
                                     arrOp2[i] = "";
                                     arrOp[i] = "=";
                                     break;
                             }
                         }
-                    }else{
+                    } else {
                         if (op2Num == 1 && !"".equals(op1[i])) {
                             char opSigno = op[i].charAt(0);
                             if (opSigno == '*' || opSigno == '/') {
-                                switch(opSigno){
-                                case '*':
-                                case '/':
-                                    String res = op1[i];
-                                    arrOp1[i] = res;
-                                    arrOp2[i] = "";
-                                    arrOp[i] = "=";
-                                    break;
+                                switch (opSigno) {
+                                    case '*':
+                                    case '/':
+                                        String res = op1[i];
+                                        arrOp1[i] = res;
+                                        arrOp2[i] = "";
+                                        arrOp[i] = "=";
+                                        break;
                                 }
                             }
                         }
@@ -301,8 +377,6 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             }
         }
     }
-    
-    
 
     /*
      *  Realiza optimización de código para: 
@@ -316,26 +390,26 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         String[] op = arrOp;
         String[] op2 = arrOp2;
         for (int i = 0; i < op1.length; i++) {
-            if (op1[i] != null) {
+            if (op1[i] != null && !"".equals(op1[i])) {
                 if (buscaLetras(op1[i]) != true) {
                     String number = op1[i];
                     Integer op1Num = Integer.valueOf(number);
                     int resultado = 0;
-                    char opSigno = op[i].charAt(0);                    
+                    char opSigno = op[i].charAt(0);
                     if (buscaLetras(op2[i]) != true && (opSigno == '+' || opSigno == '-' || opSigno == '*' || opSigno == '/')) {
-                        number = op2[i]; 
+                        number = op2[i];
                         Integer op2Num = Integer.valueOf(number);
                         String nuevoValor;
-                        
+
                         switch (opSigno) {
-                            case '+':                                                               
+                            case '+':
                                 resultado = op1Num + op2Num;
                                 nuevoValor = Integer.toString(resultado);
                                 arrOp1[i] = nuevoValor;
                                 arrOp2[i] = "";
                                 arrOp[i] = "=";
                                 break;
-                            case '-':                                                               
+                            case '-':
                                 resultado = op1Num - op2Num;
                                 nuevoValor = Integer.toString(resultado);
                                 arrOp1[i] = nuevoValor;
@@ -349,39 +423,42 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                                 arrOp2[i] = "";
                                 arrOp[i] = "=";
                                 break;
-                            case '/':                                                               
+                            case '/':
                                 resultado = op1Num / op2Num;
                                 nuevoValor = Integer.toString(resultado);
                                 arrOp1[i] = nuevoValor;
                                 arrOp2[i] = "";
                                 arrOp[i] = "=";
-                                break;    
+                                break;
                         }
                     }
                 }
-            } else {
-                break;
             }
+//            else {
+//                break;
+//            }
         }
     }
-    
-    
+
+
     /*
      *   Busca si hay un letra en alguna cadena 
      *   "T1"    -> Tiene letra
      *   "C"     -> Tiene letra           
      *   "8"     -> No tiene letra
      */
-    static boolean buscaLetras(String s){
+    static boolean buscaLetras(String s) {
         boolean res = false;
         char letra;
-        for (int i = 0; i < s.length(); i++) {
-            letra = s.charAt(i);
-            if (letra >= 63 && letra <= 90) {
-                res = true;
-                break;
+        if (!"".equals(s)) {
+            for (int i = 0; i < s.length(); i++) {
+                letra = s.charAt(i);
+                if (letra >= 63 && letra <= 90) {
+                    res = true;
+                    break;
+                }
             }
-        }        
+        }
         return res;
     }
 
