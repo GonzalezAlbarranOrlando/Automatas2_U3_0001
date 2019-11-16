@@ -177,7 +177,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         sent(cadenaInicial);
         operacion();
         imprimir();
-        //nulas();
+        nulas();
         imprimir();
 //        System.out.println("Codigo intermedio: \n" + codigoI + "\n");
 //        System.out.println("Tabla de Cuadruples: \n" + tablaC + "\n");
@@ -195,6 +195,114 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             }
         }
     }
+    
+    /*  Optimizacion de código para:
+     *  Raliza la eliminacion de nulas
+     *  x+0=x   x-0=x   x*0=0
+     *  x*1=x   x/1=x
+     */
+    static void nulas(){
+        System.out.println("Nulas-------------------------------------------------");
+        String[] temp = arrTemp;
+        String[] op1 = arrOp1;
+        String[] op = arrOp;
+        String[] op2 = arrOp2;
+        
+        /*
+         *  For que busca 0 o 1 en los Operadores1
+        */
+        for (int i = 0; i < op1.length; i++) {
+            if (op1[i] != null){
+                if (buscaLetras(op1[i]) != true){
+                    String number = op1[i];
+                    Integer op1Num = Integer.valueOf(number);
+                    if (op1Num == 0 && !"".equals(op2[i])) {
+                        char opSigno = op[i].charAt(0);
+                        if (opSigno == '+' || opSigno == '-' || opSigno == '*') {
+                            switch(opSigno){
+                                case '+':
+                                case '-':
+                                    String res = op2[i];
+                                    arrOp1[i] = res;
+                                    arrOp2[i] = "";
+                                    arrOp[i] = "=";
+                                    break;
+                                case '*':
+                                    arrOp1[i] = "0";
+                                    arrOp2[i] = "";
+                                    arrOp[i] = "=";
+                                    break;
+                            }
+                        }
+                    }else{
+                        if (op1Num == 1 && !"".equals(op2[i])) {
+                            char opSigno = op[i].charAt(0);
+                            if (opSigno == '*' || opSigno == '/') {
+                                switch(opSigno){
+                                case '*':
+                                case '/':
+                                    String res = op2[i];
+                                    arrOp1[i] = res;
+                                    arrOp2[i] = "";
+                                    arrOp[i] = "=";
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        /*
+         *  For que busca 0 o 1 en los Operadores2
+        */
+        for (int i = 0; i < op1.length; i++) {
+            if (op2[i] != null && !"".equals(op2[i])){
+                if (buscaLetras(op2[i]) != true){
+                    String number = op2[i];
+                    Integer op2Num = Integer.valueOf(number);
+                    if (op2Num == 0 &&  !"".equals(op1[i])) {
+                        char opSigno = op[i].charAt(0);
+                        if (opSigno == '+' || opSigno == '-' || opSigno == '*') {
+                            switch(opSigno){
+                                case '+':
+                                case '-':
+                                    String res = op1[i];
+                                    arrOp1[i] = res;
+                                    arrOp2[i] = "";
+                                    arrOp[i] = "=";
+                                    break;
+                                case '*': 
+                                    arrOp1[i] = "0";
+                                    arrOp2[i] = "";
+                                    arrOp[i] = "=";
+                                    break;
+                            }
+                        }
+                    }else{
+                        if (op2Num == 1 && !"".equals(op1[i])) {
+                            char opSigno = op[i].charAt(0);
+                            if (opSigno == '*' || opSigno == '/') {
+                                switch(opSigno){
+                                case '*':
+                                case '/':
+                                    String res = op1[i];
+                                    arrOp1[i] = res;
+                                    arrOp2[i] = "";
+                                    arrOp[i] = "=";
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
 
     /*
      *  Realiza optimización de código para: 
