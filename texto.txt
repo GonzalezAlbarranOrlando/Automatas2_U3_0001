@@ -1,14 +1,3 @@
-WHILE(A<B)
-{
-	WRITE(A);
-} 
-WHILE(A<B)
-{
-	WRITE(A);
-	WRITE(B);
-	IF(E<F){
-		WRITE(E);WRITE(F);
-	}
-	H=I+J*K;
-}
-H=I+J*K;
+
+Z=5*0+5*1+4*1+4*0-5/1
+
