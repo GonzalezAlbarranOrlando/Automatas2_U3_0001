@@ -255,11 +255,11 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         return m;
     }
 
-    public static void optimizacionGeneral(String s) {
-        String[][] m = tabla_to_mat(s);
+    public static void optimizacionGeneral(String s) {        
+        String[][] m = tabla_to_mat(s);                 
         System.out.println(" *************** bloque " + Integer.toString(++contB) + "***************");
         imprimirMatriz(m);
-
+        
     }
 
     private static String[][] asignarBloques(String[][] m, int pos, String num) {
@@ -299,7 +299,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         String[][] matriz = new String[t.countTokens()][5];
 
         for (int i = 0; i < matriz.length; i++) {
-
+            
             StringTokenizer t_aux = new StringTokenizer(t.nextToken(), "\t");
             switch (t_aux.countTokens()) {
                 case 4:
@@ -331,15 +331,19 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                     matriz[i][3] = t_aux.nextToken();
                     break;
                 default:
+                    matriz[i][0] = "";
+                    matriz[i][1] = "";
+                    matriz[i][2] = "";
+                    matriz[i][3] = "";                    
                     break;
             }
             matriz[i][4] = "";
         }
-
+                       
         return matriz;
 
     }
-
+    
     static void imprimirMatriz(String[][] m) {
         for (int i = 0; i < m.length; i++) {
             for (int j = 0; j < m[i].length; j++) {
@@ -377,7 +381,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             if (array[0].equals("READ")) { //--------------------------- READ
                 System.out.println("READ " + array[2] + "\n");
                 codigoI += "READ " + array[2] + "\n";
-                tablaC += array[2] + " \t \t \t" + "READ" + "\n";
+                tablaC += array[2] + "\t\t\t" + "READ" + "\n";
             } else if (array[0].equals("WRITE")) { //--------------------------- WRITE                                                                                
                 String aux = "";
                 for (int i = 1; i < array.length; i++) {//WRITE ( ... );
@@ -390,7 +394,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 aux = quitarOpArit(postfijoOrlas(aux));
                 System.out.println("WRITE " + aux + "\n");
                 codigoI += "WRITE " + aux + "\n";
-                tablaC += aux + " \t \t \t" + "WRITE" + "\n";
+                tablaC += aux + "\t\t\t" + "WRITE" + "\n";
 
             } else { //--------------------------- asignacion
                 String aux = "", op, op1, res;
@@ -407,7 +411,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 op1 = aux; //op1 = "Temp10";
                 System.out.println(res + " = " + op1 + "\n");
                 codigoI += res + " = " + op1 + "\n";
-                tablaC += op1 + " \t \t = \t " + res + "\n";
+                tablaC += op1 + "\t\t=\t " + res + "\n";
             }
             for (int i = 0; i < array.length; i++) { //--------------------------- quitar una sentencia
                 if (array[i].equals(";")) {
@@ -834,6 +838,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             //gen('goto' ei)
             System.out.println("\tgoto " + ei);
             codigoI += "\tgoto " + ei + "\n";
+            tablaC+=  " \t\t\t" + ei + ":\n";
         }
 
         //label(S.next)
