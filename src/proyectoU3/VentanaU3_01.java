@@ -711,7 +711,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 aux = quitarOpArit(postfijoOrlas(aux));
                 System.out.println("WRITE " + aux + "\n");
                 codigoI += "WRITE " + aux + "\n";
-                tablaC += aux + " \t \t \t" + "WRITE" + "\n";
+                tablaC += aux + "\t\t\t" + "WRITE" + "\n";
                 tablaBloques += aux + " \t \t \t" + "WRITE" + "\n";
 
             } else { //--------------------------- asignacion
@@ -729,7 +729,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 op1 = aux; //op1 = "Temp10";
                 System.out.println(res + " = " + op1 + "\n");
                 codigoI += res + " = " + op1 + "\n";
-                tablaC += op1 + "\t\t=\t " + res + "\n";
+                tablaC += op1 + "\t\t=\t" + res + "\n";
                 tablaBloques += op1 + " \t \t = \t " + res + "\n";
             }
             for (int i = 0; i < array.length; i++) { //--------------------------- quitar una sentencia
@@ -826,7 +826,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 // label(ei) ||
                 System.out.println(ei + ": ");
                 codigoI += ei + ":\n";
-                tablaC += " \t\t\t" + ei + ":\n";
+                tablaC += "\t\t\t" + ei + ":\n";
                 tablaBloques += " \t\t\t" + ei + ":\n";
             } else if (ifelse) {
                 ev = newlabel();
@@ -841,7 +841,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
 
             //label(ev) ||    
             System.out.println(ev + ": \n");
-            tablaC += " \t\t\t" + ev + ":\n";
+            tablaC += "\t\t\t" + ev + ":\n";
             tablaBloques += " \t\t\t" + ev + ":\n";
             codigoI += ev + ": \n";
 
@@ -854,19 +854,19 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                     //gen('goto' ei)
                     System.out.println("\tgoto " + ei);
                     codigoI += "\tgoto " + ei + "\n";
-                    tablaC += " \t\t\t" + ei + "\n";
+                    tablaC += "\t\t\t" + ei + "\n";
                     tablaBloques += " \t\t\t" + ei + "\n";
 
                 } else {   //--------------------------- IF    IF ELSE
                     //gen('goto' es)
                     System.out.println("\tgoto " + es);
                     codigoI += "\tgoto " + es + "\n";
-                    tablaC += " \t\t\t" + es + "\n";
+                    tablaC += "\t\t\t" + es + "\n";
                     tablaBloques += " \t\t\t" + es + "\n";
                     //label(ef) ||
                     System.out.println(ef + ": ");
                     codigoI += ef + ": " + "\n";
-                    tablaC += " \t\t\t" + ef + ":\n";
+                    tablaC += "\t\t\t" + ef + ":\n";
                     tablaBloques += " \t\t\t" + ef + ":\n";
                     //s2.code |||
                     sent(s2code); //--------------------------- recursividad                                    
@@ -877,7 +877,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             //label(S.next)
             System.out.println(es + ": ");
             codigoI += es + ": " + "\n";
-            tablaC += " \t\t\t" + es + ":\n";
+            tablaC += "\t\t\t" + es + ":\n";
             tablaBloques += " \t\t\t" + es + ":\n";
 
             sent(arrayToStr(array)); //--------------------------- recursividad
@@ -987,12 +987,12 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                     if (o) {
                         System.out.println(b1f + ": ");
                         codigoI += b1f + ":\n";
-                        tablaC += " \t\t\t" + b1f + ":\n";
+                        tablaC += "\t\t\t" + b1f + ":\n";
                         tablaBloques += " \t\t\t" + b1f + ":\n";
                     } else {
                         System.out.println(b1t + ": ");
                         codigoI += b1t + ":\n";
-                        tablaC += " \t\t\t" + b1t + ":\n";
+                        tablaC += "\t\t\t" + b1t + ":\n";
                         tablaBloques += " \t\t\t" + b1t + ":\n";
                     }
 
@@ -1092,7 +1092,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         codigoI += "IF " + op1 + " " + op + " " + op2 + " goto " + ev + "\n\tgoto " + ef + "\n";
         tablaC += op1 + "\t" + op2 + "\t" + op + "\t" + ev + "\n";
         tablaBloques += op1 + "\t" + op2 + "\t" + op + "\t" + ev + "\n";
-        tablaC += " \t\t\t" + ef + "\n";
+        tablaC += "\t\t\t" + ef + "\n";
         tablaBloques += " \t\t\t" + ef + "\n";
     }
 
@@ -1127,7 +1127,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             //label(ei)
             System.out.println(ei + ": ");
             codigoI += ei + ":\n";
-            tablaC += " \t\t\t" + ei + ":\n";
+            tablaC += "\t\t\t" + ei + ":\n";
             tablaBloques += " \t\t\t" + ei + ":\n";
         }
         es = newlabel();
@@ -1143,7 +1143,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
 
         //label(ev)||S1.code
         System.out.println(ev + ": \n");
-        tablaC += " \t\t\t" + ev + ":\n";
+        tablaC += "\t\t\t" + ev + ":\n";
         tablaBloques += " \t\t\t" + ev + ":\n";
         codigoI += ev + ": \n";
         //String strAux = sentencias(arrayToStr(array));//IF ()[WRITE(A);}  // WHILE ()[WRITE(A);} 
@@ -1169,13 +1169,14 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             //gen('goto' ei)
             System.out.println("\tgoto " + ei);
             codigoI += "\tgoto " + ei + "\n";
-            tablaC+=  " \t\t\t" + ei + ":\n";
+            tablaC+=  "\t\t\t" + ei + ":\n";
+            tablaBloques += " \t\t\t" + ei + ":\n";
         }
 
         //label(S.next)
         System.out.println(es + ": ");
         codigoI += es + ": " + "\n";
-        tablaC += " \t\t\t" + es + ":\n";
+        tablaC += "\t\t\t" + es + ":\n";
         tablaBloques += " \t\t\t" + es + ":\n";
     }
     static int b1v, b1f, b2v, b2f;
@@ -1246,7 +1247,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             if (array[0].equals("WRITE")) { // WRITE(A); WRITE(B); ...
                 System.out.println("WRITE " + array[2] + "\n");
                 codigoI += "WRITE " + array[2] + "\n";
-                tablaC += array[2] + " \t \t \t" + "WRITE" + "\n";
+                tablaC += array[2] + "\t\t\t" + "WRITE" + "\n";
                 tablaBloques += array[2] + " \t \t \t" + "WRITE" + "\n";
                 for (int i = 0; i < 5; i++) { // WRITE(A);
                     array[i] = null;
