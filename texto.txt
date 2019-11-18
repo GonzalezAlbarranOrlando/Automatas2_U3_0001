@@ -1,48 +1,14 @@
-salir=0;
-WHILE(salir<0){
-WRITE(horario);
-WRITE(8AM);
-WRITE(4PM);
-WRITE(8PM);
-WRITE(12AM);
-
-WRITE(sueldo_base);
-READ(pago);
-
-WRITE(horas_trab);
-READ(horas_trab);
-pago_base=(horas_trab*pago);
-
-WRITE(num_de_horas);
-READ(horas_trab25);
-pago_extra25=(horas_trab25*(1.25)*pago);
-
-WRITE(num_de_horas);
-READ(horas_trab50);
-pago_extra50=(horas_trab50*(1.50)*pago);
-
-WRITE(num_de_horas);
-READ(horas_doble);
-pago_doble=(horas_doble*(2.0)*pago);
-
-suma_base=pago*horas_trab;
-suma_extra=(pago_extra25+pago_extra50+pago_doble);
-sueldo_total= suma_extra+pago_base;
-
-WRITE(salario);
-WRITE(salario);
-WRITE(trabajador);
-
-
-IF(suma_extra>suma_base){
-	WRITE(trabajador);
-	}ELSE{
-		IF(suma_extra<suma_base){
-		WRITE(trabajador);
-		}ELSE{
-			WRITE(trabajador);
-		}
+WHILE(A<B)
+{
+	WRITE(A);
+} 
+WHILE(A<B)
+{
+	WRITE(A);
+	WRITE(B);
+	IF(E<F){
+		WRITE(E);WRITE(F);
 	}
+	H=I+J*K;
 }
-WRITE(si_desea);
-READ(saliryesno);
+H=I+J*K;
