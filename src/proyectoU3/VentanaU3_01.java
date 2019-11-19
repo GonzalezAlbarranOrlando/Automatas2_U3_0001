@@ -195,7 +195,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             }
         }
     }
-
+    
     static void optimizacion() {
         for (int i = 0; i < arrTemp.length; i++) {
             if (arrTemp[i] != null) {
