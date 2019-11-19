@@ -7,14 +7,11 @@ package proyectoU3;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Stack;
 import java.util.StringTokenizer;
-import javax.swing.JFileChooser;
 
 /**
  *
@@ -35,6 +32,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
     static String[] arrOp1 = new String[100];
     static String[] arrOp2 = new String[100];
     static String[] arrOp = new String[100];
+
+    static String textoInterfaz = "";
 
     static String[] lineas;
 
@@ -175,15 +174,13 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         cadenaInicial = juntarLineas(cadenaInicial);
         System.out.println("\n\n\nCodigo fuente: \n" + cadenaInicial + "\n");
         sent(cadenaInicial);
-        
-        optimizacion();
 
         System.out.println("Codigo intermedio: \n" + codigoI + "\n");
         System.out.println("Tabla de Cuadruples: \n" + tablaC + "\n");
         txtResultado1.setText(codigoI);
         tablaFinal();
-        txtResultado2.setText(tablaC);
         bloques(tablaBloques);//separar por bloques
+        txtResultado2.setText(textoInterfaz);
 
     }//GEN-LAST:event_procesarBtnActionPerformed
 
@@ -195,8 +192,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             }
         }
     }
-    
-    static void optimizacion() {
+
+    static void optimizacion(String s) {
         for (int i = 0; i < arrTemp.length; i++) {
             if (arrTemp[i] != null) {
                 operacion();
@@ -209,8 +206,11 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         }
         System.out.println("Código optimizado***********************");
         imprimir();
+        String codigoOptim = imprimirInterfaz();
+        textoInterfaz += s + "\n";
+        textoInterfaz += codigoOptim;
     }
-    
+
     static void imprimir() {
         System.out.println("Op1" + "\t" + "Op2" + "\t" + "Op" + "\t" + "Res");
         for (int i = 0; i < arrTemp.length; i++) {
@@ -222,6 +222,17 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         System.out.println("\n" + "\n");
     }
 
+    static String imprimirInterfaz() {
+        String res = "";
+        for (int i = 0; i < arrTemp.length; i++) {
+            if (arrTemp[i] != null && !"".equals(arrTemp[i]) && !" ".equals(arrTemp[i])) {
+                res += arrOp1[i] + "\t" + arrOp2[i] + "\t" + arrOp[i] + "\t" + arrTemp[i] + "\n";
+            }
+        }
+        res += "\n" + "\n";
+        return res;
+    }
+
     /*  Optimización de código para:
      *  Eliminar linea repetidas
      *  T1 = 3 * A
@@ -231,8 +242,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
      *  El resultado será:
      *  T1 = 3 * A
      *  T3 = T1 + T1  
-    */
-    
+     */
     static void lineasRepetidas() {
         String[] temp = arrTemp;
         String[] op1 = arrOp1;
@@ -325,11 +335,11 @@ public class VentanaU3_01 extends javax.swing.JFrame {
          *  For que busca 0 o 1 en los Operadores1
          */
         for (int i = 0; i < op1.length; i++) {
-            if (op1[i] != null && !"".equals(op1[i])) {
+            if (op1[i] != null && !"".equals(op1[i]) && !" ".equals(op1[i])) {
                 if (buscaLetras(op1[i]) != true) {
                     String number = op1[i];
                     Integer op1Num = Integer.valueOf(number);
-                    if (op1Num == 0 && !"".equals(op2[i])) {
+                    if (op1Num == 0 && !"".equals(op2[i]) && !" ".equals(op2[i])) {
                         char opSigno = op[i].charAt(0);
                         if (opSigno == '+' || opSigno == '-' || opSigno == '*') {
                             switch (opSigno) {
@@ -348,7 +358,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                             }
                         }
                     } else {
-                        if (op1Num == 1 && !"".equals(op2[i])) {
+                        if (op1Num == 1 && !"".equals(op2[i]) && !" ".equals(op2[i])) {
                             char opSigno = op[i].charAt(0);
                             if (opSigno == '*' || opSigno == '/') {
                                 switch (opSigno) {
@@ -371,11 +381,11 @@ public class VentanaU3_01 extends javax.swing.JFrame {
          *  For que busca 0 o 1 en los Operadores2
          */
         for (int i = 0; i < op1.length; i++) {
-            if (op2[i] != null && !"".equals(op2[i])) {
+            if (op2[i] != null && !"".equals(op2[i]) && !" ".equals(op2[i])) {
                 if (buscaLetras(op2[i]) != true) {
                     String number = op2[i];
                     Integer op2Num = Integer.valueOf(number);
-                    if (op2Num == 0 && !"".equals(op1[i])) {
+                    if (op2Num == 0 && !"".equals(op1[i]) && !" ".equals(op1[i])) {
                         char opSigno = op[i].charAt(0);
                         if (opSigno == '+' || opSigno == '-' || opSigno == '*') {
                             switch (opSigno) {
@@ -394,7 +404,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                             }
                         }
                     } else {
-                        if (op2Num == 1 && !"".equals(op1[i])) {
+                        if (op2Num == 1 && !"".equals(op1[i]) && !" ".equals(op1[i])) {
                             char opSigno = op[i].charAt(0);
                             if (opSigno == '*' || opSigno == '/') {
                                 switch (opSigno) {
@@ -424,7 +434,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         String[] op = arrOp;
         String[] op2 = arrOp2;
         for (int i = 0; i < op1.length; i++) {
-            if (op1[i] != null && !"".equals(op1[i])) {
+            if (op1[i] != null && !"".equals(op1[i]) && !" ".equals(op1[i])) {
                 if (buscaLetras(op1[i]) != true) {
                     String number = op1[i];
                     Integer op1Num = Integer.valueOf(number);
@@ -481,7 +491,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
     static boolean buscaLetras(String s) {
         boolean res = false;
         char letra;
-        if (!"".equals(s)) {
+        if (!"".equals(s) && !" ".equals(s)) {
             for (int i = 0; i < s.length(); i++) {
                 letra = s.charAt(i);
                 if (letra >= 63 && letra <= 90) {
@@ -509,6 +519,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         contB = 0;
         m[0][4] = "";
         String aux = "";
+        System.out.println("\n\n\n");
         for (int i = 0; i < m.length; i++) {//ciclo para optimizar bloques                        
             if (m[i][4].contains("B")) { //si es un fin de bloque
                 optimizacionGeneral(aux);
@@ -573,9 +584,26 @@ public class VentanaU3_01 extends javax.swing.JFrame {
 
     public static void optimizacionGeneral(String s) {
         String[][] m = tabla_to_mat(s);
-        System.out.println(" *************** bloque " + Integer.toString(++contB) + "***************");
+        String tituloBloque = "*************** bloque " + Integer.toString(++contB) + "***************";
+        System.out.println(tituloBloque);
+        limpiar();
+        for (int i = 0; i < m.length; i++) {
+            arrTemp[i] = m[i][3];
+            arrOp1[i] = m[i][0];
+            arrOp[i] = m[i][2];
+            arrOp2[i] = m[i][1];
+        }
         imprimirMatriz(m);
+        optimizacion(tituloBloque);
+    }
 
+    static void limpiar() {
+        for (int i = 0; i < arrTemp.length; i++) {
+            arrTemp[i] = null;
+            arrOp1[i] = null;
+            arrOp2[i] = null;
+            arrOp[i] = null;
+        }
     }
 
     private static String[][] asignarBloques(String[][] m, int pos, String num) {
@@ -1352,11 +1380,6 @@ public class VentanaU3_01 extends javax.swing.JFrame {
 
             String temp = "T" + (++numTemp);
             strTemporales += temp + " = " + op1 + " " + op + " " + op2 + "\n";
-            arrTemp[indexArrays] = temp;
-            arrOp1[indexArrays] = op1;
-            arrOp[indexArrays] = op;
-            arrOp2[indexArrays] = op2;
-            indexArrays++;
             tablaC += op1 + "\t" + op2 + "\t" + op + "\t" + temp + "\n";
             tablaBloques += op1 + "\t" + op2 + "\t" + op + "\t" + temp + "\n";
 
@@ -1649,7 +1672,6 @@ public class VentanaU3_01 extends javax.swing.JFrame {
     private javax.swing.JButton procesarBtn;
     private javax.swing.JTextArea txt;
     private javax.swing.JTextArea txtResultado1;
-    private javax.swing.JTextArea txtResultado2;
+    private static javax.swing.JTextArea txtResultado2;
     // End of variables declaration//GEN-END:variables
 }
-
