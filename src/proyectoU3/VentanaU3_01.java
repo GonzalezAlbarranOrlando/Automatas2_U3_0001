@@ -215,7 +215,15 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         System.out.println("Op1" + "\t" + "Op2" + "\t" + "Op" + "\t" + "Res");
         for (int i = 0; i < arrTemp.length; i++) {
             if (arrTemp[i] != null && !"".equals(arrTemp[i])) {
-                System.out.println(arrOp1[i] + "\t" + arrOp2[i] + "\t" + arrOp[i] + "\t" + arrTemp[i]);
+                if ("O".equals(arrOp2[i]) || "O".equals(arrOp[i]) || "O".equals(arrOp1[i])) {
+                    arrOp1[i] = "";
+                    arrOp2[i] = "";
+                    arrOp[i] = "";
+                    System.out.println(arrOp1[i] + "\t" + arrOp2[i] + "\t" + arrOp[i] + "\t" + arrTemp[i]);
+                } else {
+                    System.out.println(arrOp1[i] + "\t" + arrOp2[i] + "\t" + arrOp[i] + "\t" + arrTemp[i]);
+
+                }
             }
         }
         System.out.println("****************************************");
@@ -252,7 +260,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             if (op1[i] != null) {
                 for (int j = 0; j < temp.length; j++) {
                     if (j != i) {
-                        if ((op1[i].equals(op1[j]) && op2[i].equals(op2[j]) && op[i].equals(op[j])) || (op1[i].equals(op2[j]) && op2[i].equals(op1[j])) && op[i].equals(op[j])) {
+                        if ((!"O".equals(op[i]) && !"O".equals(op1[i]) && !"O".equals(op2[i])) && ((op1[i].equals(op1[j]) && op2[i].equals(op2[j]) && op[i].equals(op[j])) || (op1[i].equals(op2[j]) && op2[i].equals(op1[j])) && op[i].equals(op[j]))) {
                             for (int k = 0; k < temp.length; k++) {
                                 if (k != i) {
                                     if (temp[j].equals(op1[k])) {
@@ -663,8 +671,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 case 2:
                     // write t1; read a;
                     matriz[i][0] = t_aux.nextToken();
-                    matriz[i][1] = "";
-                    matriz[i][2] = "";
+                    matriz[i][1] = "O";
+                    matriz[i][2] = "O";
                     matriz[i][3] = t_aux.nextToken();
                     break;
                 case 1:
