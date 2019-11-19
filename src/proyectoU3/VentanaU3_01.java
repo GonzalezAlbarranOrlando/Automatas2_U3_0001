@@ -1652,3 +1652,4 @@ public class VentanaU3_01 extends javax.swing.JFrame {
     private javax.swing.JTextArea txtResultado2;
     // End of variables declaration//GEN-END:variables
 }
+
