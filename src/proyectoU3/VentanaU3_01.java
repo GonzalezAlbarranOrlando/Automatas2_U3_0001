@@ -200,6 +200,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 nulas();
                 asignacion();
                 lineasRepetidas();
+                asignacion();
             } else {
                 break;
             }
@@ -215,15 +216,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         System.out.println("Op1" + "\t" + "Op2" + "\t" + "Op" + "\t" + "Res");
         for (int i = 0; i < arrTemp.length; i++) {
             if (arrTemp[i] != null && !"".equals(arrTemp[i])) {
-                if ("O".equals(arrOp2[i]) || "O".equals(arrOp[i]) || "O".equals(arrOp1[i])) {
-                    arrOp1[i] = "";
-                    arrOp2[i] = "";
-                    arrOp[i] = "";
-                    System.out.println(arrOp1[i] + "\t" + arrOp2[i] + "\t" + arrOp[i] + "\t" + arrTemp[i]);
-                } else {
-                    System.out.println(arrOp1[i] + "\t" + arrOp2[i] + "\t" + arrOp[i] + "\t" + arrTemp[i]);
-
-                }
+                System.out.println(arrOp1[i] + "\t" + arrOp2[i] + "\t" + arrOp[i] + "\t" + arrTemp[i]);
             }
         }
         System.out.println("****************************************");
@@ -231,10 +224,21 @@ public class VentanaU3_01 extends javax.swing.JFrame {
     }
 
     static String imprimirInterfaz() {
+        String[] temp = arrTemp;
+        String[] op1 = arrOp1;
+        String[] op = arrOp;
+        String[] op2 = arrOp2;
         String res = "";
-        for (int i = 0; i < arrTemp.length; i++) {
-            if (arrTemp[i] != null && !"".equals(arrTemp[i]) && !" ".equals(arrTemp[i])) {
-                res += arrOp1[i] + "\t" + arrOp2[i] + "\t" + arrOp[i] + "\t" + arrTemp[i] + "\n";
+        for (int i = 0; i < temp.length; i++) {
+            if (temp[i] != null && !"".equals(temp[i]) && !" ".equals(temp[i])) {
+                if ("O".equals(op2[i]) || "O".equals(op[i]) || "O".equals(op1[i])) {
+                    op1[i] = "";
+                    op2[i] = "";
+                    op[i] = "";
+                    res += op1[i] + "\t" + op2[i] + "\t" + op[i] + "\t" + temp[i] + "\n";
+                } else {
+                    res += op1[i] + "\t" + op2[i] + "\t" + op[i] + "\t" + temp[i] + "\n";
+                }
             }
         }
         res += "\n" + "\n";
@@ -258,17 +262,22 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         String[] op2 = arrOp2;
         for (int i = 0; i < op1.length; i++) {
             if (op1[i] != null) {
+                String tempCambio = temp[i];
                 for (int j = 0; j < temp.length; j++) {
                     if (j != i) {
                         if ((!"O".equals(op[i]) && !"O".equals(op1[i]) && !"O".equals(op2[i])) && ((op1[i].equals(op1[j]) && op2[i].equals(op2[j]) && op[i].equals(op[j])) || (op1[i].equals(op2[j]) && op2[i].equals(op1[j])) && op[i].equals(op[j]))) {
                             for (int k = 0; k < temp.length; k++) {
-                                if (k != i) {
-                                    if (temp[j].equals(op1[k])) {
-                                        arrOp1[k] = temp[i];
+                                if (temp[k] != null) {
+                                    if (k != i) {
+                                        if (op1[k].equals(temp[j])) {
+                                            arrOp1[k] = tempCambio;
+                                        }
+                                        if (op2[k].equals(temp[j])) {
+                                            arrOp2[k] = tempCambio;
+                                        }
                                     }
-                                    if (temp[j].equals(op2[k])) {
-                                        arrOp2[k] = temp[i];
-                                    }
+                                } else {
+                                    break;
                                 }
                             }
                             arrOp1[j] = "";
@@ -278,6 +287,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                         }
                     }
                 }
+            } else {
+                break;
             }
         }
     }
@@ -291,39 +302,53 @@ public class VentanaU3_01 extends javax.swing.JFrame {
      *  T2 = 5 + 4
      */
     static void asignacion() {
-        String[] temp = arrTemp;
         String[] op1 = arrOp1;
-        String[] op = arrOp;
-        for (int i = 0; i < op1.length; i++) {
-            if (op1[i] != null) {
-                boolean camnios = false;
-                if ("=".equals(op[i])) {
-                    String valor = op1[i];
-                    String tempValor = temp[i];
-                    for (int j = 0; j < arrTemp.length; j++) {
-                        if (j != i) {
-                            if (op1[j] != null && op1[j] != null) {
-                                if (arrOp1[j].equals(tempValor)) {
-                                    arrOp1[j] = valor;
-                                    camnios = true;
+        for (int i = 0; i < arrOp.length; i++) {
+            if (arrOp1[i] != null) {
+                if (!"".equals(arrOp1[i]) && !" ".equals(arrOp1[i]) && !"".equals(arrOp[i]) && !" ".equals(arrOp[i])) {
+                    boolean cambios = false;
+                    String opRes = arrOp[i];
+                    String replace = opRes.replace(" ", "");
+                    char opREs1 = replace.charAt(0);
+                    if (opREs1 == '=') {
+                        String valor = arrOp1[i];
+                        String tempValor = arrTemp[i];
+                        for (int j = 0; j < arrTemp.length; j++) {
+                            if (j != i) {
+                                if (op1[j] != null && op1[j] != null) {
+                                    String opRes1 = arrOp1[j];
+                                    String replace1 = opRes1.replace(" ", "");
+                                    if (replace1.equals(tempValor)) {
+                                        arrOp1[j] = valor;
+                                        cambios = true;
+                                    }
+                                    String opRes2 = arrOp2[j];
+                                    String replace2 = opRes2.replace(" ", "");
+                                    if (replace2.equals(tempValor)) {
+                                        arrOp2[j] = valor;
+                                        cambios = true;
+                                    }
+                                    if ((arrTemp[j].equals(arrTemp[i]) && arrOp[j].equals(arrOp[i])) && !arrOp.equals("O")) {
+                                        arrOp[j] = "";
+                                        arrOp1[j] = "";
+                                        arrOp2[j] = "";
+                                        arrTemp[j] = "";
+                                    }
+                                } else {
+                                    break;
                                 }
-                                if (arrOp2[j].equals(tempValor)) {
-                                    arrOp2[j] = valor;
-                                    camnios = true;
-                                }
-                            } else {
-                                break;
                             }
                         }
+                        if (cambios) {
+                            arrOp[i] = "";
+                            arrOp1[i] = "";
+                            arrOp2[i] = "";
+                            arrTemp[i] = "";
+                        }
                     }
-                    if (camnios) {
-                        arrOp[i] = "";
-                        arrOp1[i] = "";
-                        arrOp2[i] = "";
-                        arrTemp[i] = "";
-                    }
-
                 }
+            } else {
+                break;
             }
         }
 
@@ -442,49 +467,53 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         String[] op = arrOp;
         String[] op2 = arrOp2;
         for (int i = 0; i < op1.length; i++) {
-            if (op1[i] != null && !"".equals(op1[i]) && !" ".equals(op1[i])) {
-                if (buscaLetras(op1[i]) != true) {
-                    String number = op1[i];
-                    Integer op1Num = Integer.valueOf(number);
-                    int resultado = 0;
-                    char opSigno = op[i].charAt(0);
-                    if (buscaLetras(op2[i]) != true && (opSigno == '+' || opSigno == '-' || opSigno == '*' || opSigno == '/')) {
-                        number = op2[i];
-                        Integer op2Num = Integer.valueOf(number);
-                        String nuevoValor;
+            if (op1[i] != null) {
+                if (!"".equals(op1[i]) && !" ".equals(op1[i])) {
+                    if (buscaLetras(op1[i]) != true && buscaLetras(op2[i]) != true) {
+                        String number = op1[i];
+                        Integer op1Num = Integer.valueOf(number);
+                        int resultado = 0;
+                        char opSigno = op[i].charAt(0);
+                        if (buscaLetras(op2[i]) != true && (opSigno == '+' || opSigno == '-' || opSigno == '*' || opSigno == '/')) {
+                            number = op2[i];
+                            Integer op2Num = Integer.valueOf(number);
+                            String nuevoValor;
 
-                        switch (opSigno) {
-                            case '+':
-                                resultado = op1Num + op2Num;
-                                nuevoValor = Integer.toString(resultado);
-                                arrOp1[i] = nuevoValor;
-                                arrOp2[i] = "";
-                                arrOp[i] = "=";
-                                break;
-                            case '-':
-                                resultado = op1Num - op2Num;
-                                nuevoValor = Integer.toString(resultado);
-                                arrOp1[i] = nuevoValor;
-                                arrOp2[i] = "";
-                                arrOp[i] = "=";
-                                break;
-                            case '*':
-                                resultado = op1Num * op2Num;
-                                nuevoValor = Integer.toString(resultado);
-                                arrOp1[i] = nuevoValor;
-                                arrOp2[i] = "";
-                                arrOp[i] = "=";
-                                break;
-                            case '/':
-                                resultado = op1Num / op2Num;
-                                nuevoValor = Integer.toString(resultado);
-                                arrOp1[i] = nuevoValor;
-                                arrOp2[i] = "";
-                                arrOp[i] = "=";
-                                break;
+                            switch (opSigno) {
+                                case '+':
+                                    resultado = op1Num + op2Num;
+                                    nuevoValor = Integer.toString(resultado);
+                                    arrOp1[i] = nuevoValor;
+                                    arrOp2[i] = "";
+                                    arrOp[i] = "=";
+                                    break;
+                                case '-':
+                                    resultado = op1Num - op2Num;
+                                    nuevoValor = Integer.toString(resultado);
+                                    arrOp1[i] = nuevoValor;
+                                    arrOp2[i] = "";
+                                    arrOp[i] = "=";
+                                    break;
+                                case '*':
+                                    resultado = op1Num * op2Num;
+                                    nuevoValor = Integer.toString(resultado);
+                                    arrOp1[i] = nuevoValor;
+                                    arrOp2[i] = "";
+                                    arrOp[i] = "=";
+                                    break;
+                                case '/':
+                                    resultado = op1Num / op2Num;
+                                    nuevoValor = Integer.toString(resultado);
+                                    arrOp1[i] = nuevoValor;
+                                    arrOp2[i] = "";
+                                    arrOp[i] = "=";
+                                    break;
+                            }
                         }
                     }
                 }
+            } else {
+                break;
             }
         }
     }
@@ -502,7 +531,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         if (!"".equals(s) && !" ".equals(s)) {
             for (int i = 0; i < s.length(); i++) {
                 letra = s.charAt(i);
-                if (letra >= 63 && letra <= 90) {
+                if ((letra >= 63 && letra <= 90) || (letra >= 97 && letra <= 122)) {
                     res = true;
                     break;
                 }
@@ -1594,16 +1623,24 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaU3_01.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaU3_01.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaU3_01.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaU3_01.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaU3_01.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaU3_01.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaU3_01.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VentanaU3_01.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
