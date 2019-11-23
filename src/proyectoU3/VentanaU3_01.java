@@ -15,7 +15,7 @@ import java.util.StringTokenizer;
 
 /**
  *
- * @author 52722
+ * @author Salinas
  */
 public class VentanaU3_01 extends javax.swing.JFrame {
 
