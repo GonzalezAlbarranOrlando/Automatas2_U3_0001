@@ -193,7 +193,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         }
     }
 
-    static void optimizacion(String s) {
+    static void optimizacion() {
         for (int i = 0; i < arrTemp.length; i++) {
             if (arrTemp[i] != null) {
                 operacion();
@@ -208,7 +208,6 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         System.out.println("Código optimizado***********************");
         imprimir();
         String codigoOptim = imprimirInterfaz();
-        textoInterfaz += s + "\n";
         textoInterfaz += codigoOptim;
     }
 
@@ -232,7 +231,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         for (int i = 0; i < temp.length; i++) {
             if (temp[i] != null && !"".equals(temp[i]) && !" ".equals(temp[i])) {
                 if ("O".equals(op2[i]) || "O".equals(op[i]) || "O".equals(op1[i])) {
-                    op1[i] = "";
+//                    op1[i] = "";
                     op2[i] = "";
                     op[i] = "";
                     res += op1[i] + "\t" + op2[i] + "\t" + op[i] + "\t" + temp[i] + "\n";
@@ -241,7 +240,6 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 }
             }
         }
-        res += "\n" + "\n";
         return res;
     }
 
@@ -370,10 +368,11 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         for (int i = 0; i < op1.length; i++) {
             if (op1[i] != null && !"".equals(op1[i]) && !" ".equals(op1[i])) {
                 if (buscaLetras(op1[i]) != true) {
-                    String number = op1[i];
+                    String number = op1[i].replace(" ", "");
                     Integer op1Num = Integer.valueOf(number);
                     if (op1Num == 0 && !"".equals(op2[i]) && !" ".equals(op2[i])) {
-                        char opSigno = op[i].charAt(0);
+                        String signo = op[i].replace(" ", "");
+                        char opSigno = signo.charAt(0);
                         if (opSigno == '+' || opSigno == '-' || opSigno == '*') {
                             switch (opSigno) {
                                 case '+':
@@ -392,7 +391,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                         }
                     } else {
                         if (op1Num == 1 && !"".equals(op2[i]) && !" ".equals(op2[i])) {
-                            char opSigno = op[i].charAt(0);
+                            String signo = op[i].replace(" ", "");
+                            char opSigno = signo.charAt(0);
                             if (opSigno == '*' || opSigno == '/') {
                                 switch (opSigno) {
                                     case '*':
@@ -416,10 +416,11 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         for (int i = 0; i < op1.length; i++) {
             if (op2[i] != null && !"".equals(op2[i]) && !" ".equals(op2[i])) {
                 if (buscaLetras(op2[i]) != true) {
-                    String number = op2[i];
+                    String number = op2[i].replace(" ", "");
                     Integer op2Num = Integer.valueOf(number);
                     if (op2Num == 0 && !"".equals(op1[i]) && !" ".equals(op1[i])) {
-                        char opSigno = op[i].charAt(0);
+                        String signo = op[i].replace(" ", "");
+                        char opSigno = signo.charAt(0);
                         if (opSigno == '+' || opSigno == '-' || opSigno == '*') {
                             switch (opSigno) {
                                 case '+':
@@ -438,7 +439,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                         }
                     } else {
                         if (op2Num == 1 && !"".equals(op1[i]) && !" ".equals(op1[i])) {
-                            char opSigno = op[i].charAt(0);
+                            String signo = op[i].replace(" ", "");
+                            char opSigno = signo.charAt(0);
                             if (opSigno == '*' || opSigno == '/') {
                                 switch (opSigno) {
                                     case '*':
@@ -471,11 +473,13 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 if (!"".equals(op1[i]) && !" ".equals(op1[i])) {
                     if (buscaLetras(op1[i]) != true && buscaLetras(op2[i]) != true) {
                         String number = op1[i];
-                        Integer op1Num = Integer.valueOf(number);
+                        String replace = number.replace(" ", "");
+                        Integer op1Num = Integer.valueOf(replace);
                         int resultado = 0;
-                        char opSigno = op[i].charAt(0);
+                        String opString = op[i].replace(" ", "");
+                        char opSigno = opString.charAt(0);
                         if (buscaLetras(op2[i]) != true && (opSigno == '+' || opSigno == '-' || opSigno == '*' || opSigno == '/')) {
-                            number = op2[i];
+                            number = op2[i].replace(" ", "");
                             Integer op2Num = Integer.valueOf(number);
                             String nuevoValor;
 
@@ -621,8 +625,6 @@ public class VentanaU3_01 extends javax.swing.JFrame {
 
     public static void optimizacionGeneral(String s) {
         String[][] m = tabla_to_mat(s);
-        String tituloBloque = "*************** bloque " + Integer.toString(++contB) + "***************";
-        System.out.println(tituloBloque);
         limpiar();
         for (int i = 0; i < m.length; i++) {
             arrTemp[i] = m[i][3];
@@ -631,7 +633,7 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             arrOp2[i] = m[i][1];
         }
         imprimirMatriz(m);
-        optimizacion(tituloBloque);
+        optimizacion();
     }
 
     static void limpiar() {
@@ -758,8 +760,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             if (array[0].equals("READ")) { //--------------------------- READ
                 System.out.println("READ " + array[2] + "\n");
                 codigoI += "READ " + array[2] + "\n";
-                tablaC += array[2] + " \t \t \t" + "READ" + "\n";
-                tablaBloques += array[2] + " \t \t \t" + "READ" + "\n";
+                tablaC += array[2] + "\t\t\t" + "READ" + "\n";
+                tablaBloques += array[2] + "\t\t\t" + "READ" + "\n";
             } else if (array[0].equals("WRITE")) { //--------------------------- WRITE                                                                                
                 String aux = "";
                 for (int i = 1; i < array.length; i++) {//WRITE ( ... );
@@ -772,8 +774,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 aux = quitarOpArit(postfijoOrlas(aux));
                 System.out.println("WRITE " + aux + "\n");
                 codigoI += "WRITE " + aux + "\n";
-                tablaC += aux + " \t \t \t" + "WRITE" + "\n";
-                tablaBloques += aux + " \t \t \t" + "WRITE" + "\n";
+                tablaC += aux + "\t\t\t" + "WRITE" + "\n";
+                tablaBloques += aux + "\t\t\t" + "WRITE" + "\n";
 
             } else { //--------------------------- asignacion
                 String aux = "", op, op1, res;
@@ -788,9 +790,9 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 res = array[0]; // res = "Z";
                 op = array[1]; // op = "=";
                 op1 = aux; //op1 = "Temp10";
-                System.out.println(res + " = " + op1 + "\n");
-                codigoI += res + " = " + op1 + "\n";
-                tablaBloques += op1 + " \t \t = \t " + res + "\n";
+                System.out.println(res + "=" + op1 + "\n");
+                codigoI += res + "=" + op1 + "\n";
+                tablaBloques += op1 + "\t\t=\t" + res + "\n";
             }
             for (int i = 0; i < array.length; i++) { //--------------------------- quitar una sentencia
                 if (array[i].equals(";")) {
@@ -886,8 +888,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                 // label(ei) ||
                 System.out.println(ei + ": ");
                 codigoI += ei + ":\n";
-                tablaC += " \t\t\t" + ei + ":\n";
-                tablaBloques += " \t\t\t" + ei + ":\n";
+                tablaC += "\t\t\t" + ei + ":\n";
+                tablaBloques += "\t\t\t" + ei + ":\n";
             } else if (ifelse) {
                 ev = newlabel();
                 ef = newlabel();
@@ -901,9 +903,9 @@ public class VentanaU3_01 extends javax.swing.JFrame {
 
             //label(ev) ||    
             System.out.println(ev + ": \n");
-            tablaC += " \t\t\t" + ev + ":\n";
-            tablaBloques += " \t\t\t" + ev + ":\n";
-            codigoI += ev + ": \n";
+            tablaC += "\t\t\t" + ev + ":\n";
+            tablaBloques += "\t\t\t" + ev + ":\n";
+            codigoI += ev + ":\n";
 
             //s1.code ||
             sent(s1code); //--------------------------- recursividad
@@ -914,20 +916,20 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                     //gen('goto' ei)
                     System.out.println("\tgoto " + ei);
                     codigoI += "\tgoto " + ei + "\n";
-                    tablaC += " \t\t\t" + ei + "\n";
-                    tablaBloques += " \t\t\t" + ei + "\n";
+                    tablaC += "\t\t\t" + ei + "\n";
+                    tablaBloques += "\t\t\t" + ei + "\n";
 
                 } else {   //--------------------------- IF    IF ELSE
                     //gen('goto' es)
                     System.out.println("\tgoto " + es);
                     codigoI += "\tgoto " + es + "\n";
-                    tablaC += " \t\t\t" + es + "\n";
-                    tablaBloques += " \t\t\t" + es + "\n";
+                    tablaC += "\t\t\t" + es + "\n";
+                    tablaBloques += "\t\t\t" + es + "\n";
                     //label(ef) ||
                     System.out.println(ef + ": ");
                     codigoI += ef + ": " + "\n";
-                    tablaC += " \t\t\t" + ef + ":\n";
-                    tablaBloques += " \t\t\t" + ef + ":\n";
+                    tablaC += "\t\t\t" + ef + ":\n";
+                    tablaBloques += "\t\t\t" + ef + ":\n";
                     //s2.code |||
                     sent(s2code); //--------------------------- recursividad                                    
                 }
@@ -937,8 +939,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             //label(S.next)
             System.out.println(es + ": ");
             codigoI += es + ": " + "\n";
-            tablaC += " \t\t\t" + es + ":\n";
-            tablaBloques += " \t\t\t" + es + ":\n";
+            tablaC += "\t\t\t" + es + ":\n";
+            tablaBloques += "\t\t\t" + es + ":\n";
 
             sent(arrayToStr(array)); //--------------------------- recursividad
         }
@@ -1047,13 +1049,13 @@ public class VentanaU3_01 extends javax.swing.JFrame {
                     if (o) {
                         System.out.println(b1f + ": ");
                         codigoI += b1f + ":\n";
-                        tablaC += " \t\t\t" + b1f + ":\n";
-                        tablaBloques += " \t\t\t" + b1f + ":\n";
+                        tablaC += "\t\t\t" + b1f + ":\n";
+                        tablaBloques += "\t\t\t" + b1f + ":\n";
                     } else {
                         System.out.println(b1t + ": ");
                         codigoI += b1t + ":\n";
-                        tablaC += " \t\t\t" + b1t + ":\n";
-                        tablaBloques += " \t\t\t" + b1t + ":\n";
+                        tablaC += "\t\t\t" + b1t + ":\n";
+                        tablaBloques += "\t\t\t" + b1t + ":\n";
                     }
 
                     break;
@@ -1152,8 +1154,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         codigoI += "IF " + op1 + " " + op + " " + op2 + " goto " + ev + "\n\tgoto " + ef + "\n";
         tablaC += op1 + "\t" + op2 + "\t" + op + "\t" + ev + "\n";
         tablaBloques += op1 + "\t" + op2 + "\t" + op + "\t" + ev + "\n";
-        tablaC += " \t\t\t" + ef + "\n";
-        tablaBloques += " \t\t\t" + ef + "\n";
+        tablaC += "\t\t\t" + ef + "\n";
+        tablaBloques += "\t\t\t" + ef + "\n";
     }
 
     static void ifAndWhile(String cf) { //WHILE(a>b|5+b*c>j&c<d){WRITE(A);}
@@ -1187,8 +1189,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             //label(ei)
             System.out.println(ei + ": ");
             codigoI += ei + ":\n";
-            tablaC += " \t\t\t" + ei + ":\n";
-            tablaBloques += " \t\t\t" + ei + ":\n";
+            tablaC += "\t\t\t" + ei + ":\n";
+            tablaBloques += "\t\t\t" + ei + ":\n";
         }
         es = newlabel();
         ef = es;
@@ -1203,8 +1205,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
 
         //label(ev)||S1.code
         System.out.println(ev + ": \n");
-        tablaC += " \t\t\t" + ev + ":\n";
-        tablaBloques += " \t\t\t" + ev + ":\n";
+        tablaC += "\t\t\t" + ev + ":\n";
+        tablaBloques += "\t\t\t" + ev + ":\n";
         codigoI += ev + ": \n";
         //String strAux = sentencias(arrayToStr(array));//IF ()[WRITE(A);}  // WHILE ()[WRITE(A);} 
         array = quitarNulos(array);
@@ -1234,8 +1236,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
         //label(S.next)
         System.out.println(es + ": ");
         codigoI += es + ": " + "\n";
-        tablaC += " \t\t\t" + es + ":\n";
-        tablaBloques += " \t\t\t" + es + ":\n";
+        tablaC += "\t\t\t" + es + ":\n";
+        tablaBloques += "\t\t\t" + es + ":\n";
     }
     static int b1v, b1f, b2v, b2f;
 
@@ -1305,8 +1307,8 @@ public class VentanaU3_01 extends javax.swing.JFrame {
             if (array[0].equals("WRITE")) { // WRITE(A); WRITE(B); ...
                 System.out.println("WRITE " + array[2] + "\n");
                 codigoI += "WRITE " + array[2] + "\n";
-                tablaC += array[2] + " \t \t \t" + "WRITE" + "\n";
-                tablaBloques += array[2] + " \t \t \t" + "WRITE" + "\n";
+                tablaC += array[2] + "\t\t\t" + "WRITE" + "\n";
+                tablaBloques += array[2] + "\t\t\t" + "WRITE" + "\n";
                 for (int i = 0; i < 5; i++) { // WRITE(A);
                     array[i] = null;
                 }
